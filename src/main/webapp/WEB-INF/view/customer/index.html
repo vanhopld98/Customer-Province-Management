@@ -7,60 +7,70 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-    <div class="card-header">
-        <div class="row mt-3">
-            <div class="col">
-                <h5>Customer Management</h5>
+<div class="card-header">
+    <div class="row mt-3">
+        <div class="col">
+            <h5>Customer Management</h5>
+        </div>
+        <div class="col-auto">
+            <a href="/customer/create" class="btn btn-primary">Create a new Customer</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-9"></div>
+    <div class="col-3">
+        <form action="/customer">
+            <div class="input-group">
+                <input type="search" id="form1" class="form-control" name="q"/>
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
             </div>
-            <div class="col-auto">
-                <a href="/customer/create" class="btn btn-primary">Create a new Customer</a>
-            </div>
+        </form>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <th:block th:replace="/layout :: sidebar">
+        </th:block>
+        <div class="col-9">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Fist Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Province</th>
+                    <th scope="col" colspan="2">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="customer,rowStat : ${customerList}">
+                    <th scope="row" th:text="${customer.id}"></th>
+                    <td th:text="${customer.firstName}"></td>
+                    <td th:text="${customer.lastName}"></td>
+                    <td th:text="${customer.province?.name}"></td>
+                    <td>
+                        <a th:href="@{/customer/edit/__${customer.id}__}" class="btn btn-success">Edit</a>
+                        <a th:href="@{/customer/delete/__${customer.id}__}" class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="row">
-        <div class="col-9"></div>
-        <div class="col-3">
-            <form action="/">
-                <div class="input-group">
-                    <input type="search" id="form1" class="form-control" name="q"/>
-                    <button type="button" class="btn btn-primary">
-                        Search
-                    </button>
-                </div>
-            </form>
+        <div class="col-10"></div>
+        <div class="col-2">
+            <a th:href="@{'/customer'(page=${customerList.number - 1})}"
+               th:if="${customerList.hasPrevious()}" class="btn btn-secondary">Previous</a>
+            <span th:text="${customerList.number + 1 }"></span> / <span th:text="${customerList.totalPages}"></span>
+            <a th:href="@{'/customer'(page=${customerList.number + 1})}"
+               th:if="${customerList.hasNext()}" class="btn btn-secondary">Next</a>
         </div>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <th:block th:replace="/layout :: sidebar">
-            </th:block>
-            <div class="col-9">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Fist Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Province</th>
-                        <th scope="col" colspan="2">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="customer,rowStat : ${customerList}">
-                        <th scope="row" th:text="${customer.id}"></th>
-                        <td th:text="${customer.firstName}"></td>
-                        <td th:text="${customer.lastName}"></td>
-                        <td th:text="${customer.province?.name}"></td>
-                        <td>
-                            <a th:href="@{/customer/edit/__${customer.id}__}" class="btn btn-success">Edit</a>
-                            <a th:href="@{/customer/delete/__${customer.id}__}" class="btn btn-outline-danger">Delete</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
